@@ -1,8 +1,11 @@
 package br.com.ritchie.persistencia.jdbc;
 
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import br.com.ritchie.entidades.Usuario;
 
@@ -48,6 +51,64 @@ public class UsuarioDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void salvar (Usuario usuario){
+		if (usuario.getId()!= null){
+			atualizar(usuario);
+		} else {
+			cadastrar(usuario);
+		}
+	}
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Usuario buscaPorId (Integer id){
+		Usuario usuRetorno = null;
+		
+		String sql = "select * from usuario where id=?";
+		try (PreparedStatement pre = con.prepareStatement(sql)){
+			pre.setInt(1, id);
+			
+			ResultSet resultado = pre.executeQuery();
+			if (resultado.next()){
+				usuRetorno = new Usuario();
+				usuRetorno.setId(resultado.getInt("id"));
+				usuRetorno.setNome(resultado.getString("nome"));
+				usuRetorno.setLogin(resultado.getString("login"));
+				usuRetorno.setSenha(resultado.getString("senha"));
+				
+				return usuRetorno;
+			}
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
+		return null;
+	}
+	
+	public List<Usuario> buscaTodos (){
+		
+		List<Usuario> lista = new ArrayList<Usuario>();
+		String sql = "select * from usuario";
+		try (PreparedStatement pre = con.prepareStatement(sql)){
+					
+			ResultSet resultado = pre.executeQuery();
+			while (resultado.next()){
+				Usuario usuRetorno  = new Usuario();
+				usuRetorno.setId(resultado.getInt("id"));
+				usuRetorno.setNome(resultado.getString("nome"));
+				usuRetorno.setLogin(resultado.getString("login"));
+				usuRetorno.setSenha(resultado.getString("senha"));
+				
+				lista.add(usuRetorno);
+			}
+			
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
+		return lista;
 	}
 
 }

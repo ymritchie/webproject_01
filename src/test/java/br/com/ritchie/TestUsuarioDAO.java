@@ -1,12 +1,14 @@
 package br.com.ritchie;
 
+import java.util.List;
+
 import br.com.ritchie.entidades.Usuario;
 import br.com.ritchie.persistencia.jdbc.UsuarioDAO;
 
 public class TestUsuarioDAO {
 
 	public static void main(String[] args) {
-		testExcluir();
+		testarBuscarTodos();
 	}
 	
 	public static void testCadastrar(){
@@ -37,6 +39,38 @@ public class TestUsuarioDAO {
 		
 		UsuarioDAO usuDao = new UsuarioDAO();
 		usuDao.atualizar(usu);
+	}
+	
+	public static void testSalvar(){
+		Usuario usu = new Usuario();
+		//usu.setId(7);
+		usu.setNome("Samara Mora");
+		usu.setLogin("sam");
+		usu.setSenha("senha");
+		
+		
+		UsuarioDAO usuDao = new UsuarioDAO();
+		usuDao.salvar(usu);
+		
+		System.out.println("Salvo com sucesso!!");
+	}
+	
+	public static void testBuscarPorId(){
+		UsuarioDAO usuDao = new UsuarioDAO();
+		Usuario usuario = usuDao.buscaPorId(7);
+		System.out.println(usuario);
+	}
+	
+	public static void testarBuscarTodos(){
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		List<Usuario> listaTodos = usuarioDAO.buscaTodos();
+		if (listaTodos.size()>0) {
+			for (Usuario usu : listaTodos){
+				System.out.println(usu);
+			}
+		} else {
+			System.out.println("Nenhum registro encontrado!!");
+		}
 	}
 
 }
