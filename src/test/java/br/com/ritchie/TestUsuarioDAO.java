@@ -8,9 +8,28 @@ import br.com.ritchie.persistencia.jdbc.UsuarioDAO;
 public class TestUsuarioDAO {
 
 	public static void main(String[] args) {
-		testarBuscarTodos();
+		//testarBuscarTodos();
+		//testeAutenticar();
+		testSalvar();
 	}
 	
+	private static void testeAutenticar() {
+		UsuarioDAO dao = new UsuarioDAO();
+		
+		Usuario user = new Usuario();
+		user.setLogin("ymritchie");
+		user.setSenha("1234");
+		
+		Usuario userRetorno = dao.autenticar(user);
+		
+		if (userRetorno.getId() > 0) {
+			System.out.println("Bem Vindo: " + userRetorno.getNome());
+		} else {
+			System.out.println("Login ou senha Incorretos");
+		}
+
+	}
+
 	public static void testCadastrar(){
 		Usuario usu = new Usuario();
 		usu.setNome("Yanisley Mora Ritchie");
@@ -44,9 +63,9 @@ public class TestUsuarioDAO {
 	public static void testSalvar(){
 		Usuario usu = new Usuario();
 		//usu.setId(7);
-		usu.setNome("Samara Mora");
-		usu.setLogin("sam");
-		usu.setSenha("senha");
+		usu.setNome("Nicholas Mora");
+		usu.setLogin("nic");
+		usu.setSenha("123");
 		
 		
 		UsuarioDAO usuDao = new UsuarioDAO();
